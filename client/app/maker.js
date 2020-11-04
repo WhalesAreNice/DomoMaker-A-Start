@@ -14,6 +14,23 @@ const handleDomo = (e) => {
     return false;
 };
 
+const LevelUpDomo = (e) => {
+    e.preventDefault();
+    //console.log("test");
+    
+    let newLevel = e.target.dataset.level + 1;
+    
+    let domoData = {
+        id: e.target.dataset.domoid,
+        name: e.target.dataset.name,
+        age: e.target.dataset.age,
+        level: newLevel,
+    };
+    
+    sendAjax('POST', '/levelUp', domoData, loadDomosFromServer);
+    return false;
+};
+
 const DomoForm = (props) => {
     return (
         <form id="domoForm" 
@@ -51,7 +68,7 @@ const DomoList = function(props) {
                 <h3 className="domoName">Name: {domo.name}</h3>
                 <h3 className="domoAge">Age: {domo.age}</h3>
                 <h3 className="domoLevel">Level: {domo.level}</h3>
-                <input className="levelUpDomo" type="submit" value="Level Up" />
+                <input className="levelUpDomo" type="submit" value="Level Up" onClick={LevelUpDomo} data-domoid={domo._id} data-csrf={props.csrf} data-name={domo.name} data-age={domo.age} />
             </div>
         );
     });
@@ -62,14 +79,6 @@ const DomoList = function(props) {
         </div>
     );
 };
-
-const LevelUpDomo = function(e) => {
-    let levelsToAdd = 1;
-    sendAjax('POST', '/levelUp', levelsToAdd, function() {
-        console.log("test");
-    });
-};
-
 
 
 const loadDomosFromServer = () => {

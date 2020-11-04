@@ -57,10 +57,10 @@ const getDomos = (request, response) => {
 };
 
 const levelUpDomo = (req, res) => {
-    console.log('test');
+    console.log("test");
 }
 
 module.exports.makerPage = makerPage;
 module.exports.getDomos = getDomos;
 module.exports.make = makeDomo;
-//module.exports.levelUp = levelUpDomo;
+module.exports.levelUp = levelUpDomo;
