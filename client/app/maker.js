@@ -1,3 +1,5 @@
+let _csrf;
+
 const handleDomo = (e) => {
     e.preventDefault();
     
@@ -8,6 +10,7 @@ const handleDomo = (e) => {
         return false;
     }
     sendAjax('POST', $("#domoForm").attr("action"), $("#domoForm").serialize(), function() {
+        
         loadDomosFromServer();
     });
     
@@ -16,16 +19,27 @@ const handleDomo = (e) => {
 
 const LevelUpDomo = (e) => {
     e.preventDefault();
+    
+    //console.log(_csrf);
     //console.log("test");
     
-    let newLevel = e.target.dataset.level + 1;
+    //let newLevel = e.target.dataset.level + 1;
+    //
+    //let domoData = Domo.find(e.target.dataset.domoid);
+    
+    //let domoData = {
+    //    id: e.target.dataset.domoid,
+    //    name: e.target.dataset.name,
+    //    age: e.target.dataset.age,
+    //    level: newLevel,
+    //};
+    
+    //console.log(domoData);
     
     let domoData = {
         id: e.target.dataset.domoid,
-        name: e.target.dataset.name,
-        age: e.target.dataset.age,
-        level: newLevel,
-    };
+        _csrf: _csrf,
+    }
     
     sendAjax('POST', '/levelUp', domoData, loadDomosFromServer);
     return false;
@@ -68,7 +82,7 @@ const DomoList = function(props) {
                 <h3 className="domoName">Name: {domo.name}</h3>
                 <h3 className="domoAge">Age: {domo.age}</h3>
                 <h3 className="domoLevel">Level: {domo.level}</h3>
-                <input className="levelUpDomo" type="submit" value="Level Up" onClick={LevelUpDomo} data-domoid={domo._id} data-csrf={props.csrf} data-name={domo.name} data-age={domo.age} />
+                <input className="levelUpDomo" type="submit" value="Level Up" onClick={LevelUpDomo} data-domoid={domo._id} csrf={_csrf} />
             </div>
         );
     });
@@ -90,6 +104,8 @@ const loadDomosFromServer = () => {
 };
 
 const setup = function(csrf) {
+    _csrf = csrf;
+    
     ReactDOM.render(
         <DomoForm csrf={csrf} />, document.querySelector("#makeDomo")
     );

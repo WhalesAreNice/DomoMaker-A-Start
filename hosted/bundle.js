@@ -1,5 +1,7 @@
 "use strict";
 
+var _csrf;
+
 var handleDomo = function handleDomo(e) {
   e.preventDefault();
   $("#domoMessage").animate({
@@ -18,14 +20,22 @@ var handleDomo = function handleDomo(e) {
 };
 
 var LevelUpDomo = function LevelUpDomo(e) {
-  e.preventDefault(); //console.log("test");
+  e.preventDefault(); //console.log(_csrf);
+  //console.log("test");
+  //let newLevel = e.target.dataset.level + 1;
+  //
+  //let domoData = Domo.find(e.target.dataset.domoid);
+  //let domoData = {
+  //    id: e.target.dataset.domoid,
+  //    name: e.target.dataset.name,
+  //    age: e.target.dataset.age,
+  //    level: newLevel,
+  //};
+  //console.log(domoData);
 
-  var newLevel = e.target.dataset.level + 1;
   var domoData = {
     id: e.target.dataset.domoid,
-    name: e.target.dataset.name,
-    age: e.target.dataset.age,
-    level: newLevel
+    _csrf: _csrf
   };
   sendAjax('POST', '/levelUp', domoData, loadDomosFromServer);
   return false;
@@ -100,9 +110,7 @@ var DomoList = function DomoList(props) {
       value: "Level Up",
       onClick: LevelUpDomo,
       "data-domoid": domo._id,
-      "data-csrf": props.csrf,
-      "data-name": domo.name,
-      "data-age": domo.age
+      csrf: _csrf
     }));
   });
   return /*#__PURE__*/React.createElement("div", {
@@ -119,6 +127,7 @@ var loadDomosFromServer = function loadDomosFromServer() {
 };
 
 var setup = function setup(csrf) {
+  _csrf = csrf;
   ReactDOM.render( /*#__PURE__*/React.createElement(DomoForm, {
     csrf: csrf
   }), document.querySelector("#makeDomo"));

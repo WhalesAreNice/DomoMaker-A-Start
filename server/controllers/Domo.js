@@ -57,7 +57,35 @@ const getDomos = (request, response) => {
 };
 
 const levelUpDomo = (req, res) => {
-    console.log("test");
+    //console.log(req.body.id);
+    
+    domoData = Domo.DomoModel.findById(req.body.id, (err, docs) => {
+        if(err){
+            console.log(err);
+            return res.status(400).json({error: 'An error occured' });
+        }
+        //console.log(docs);
+        if(!docs){
+            console.log("fail");
+            return res.json({error: 'no domo found' });
+        }
+        
+        const domoData = docs;
+        domoData.level++;
+        
+        //console.log(domoData);
+        
+        const domoPromise = domoData.save();
+        
+        domoPromise.then(() => res.json({redirect: '/maker' }));
+        
+        domoPromise.catch((errr) => {
+            console.log(errr);
+            return res.status(400).json({error: 'An error occured' });
+        });
+        return domoPromise;
+    });
+    
 }
 
 module.exports.makerPage = makerPage;
