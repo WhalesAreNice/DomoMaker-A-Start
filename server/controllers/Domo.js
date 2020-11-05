@@ -59,7 +59,7 @@ const getDomos = (request, response) => {
 const levelUpDomo = (req, res) => {
     //console.log(req.body.id);
     
-    domoData = Domo.DomoModel.findById(req.body.id, (err, docs) => {
+    let domoData = Domo.DomoModel.findById(req.body.id, (err, docs) => {
         if(err){
             console.log(err);
             return res.status(400).json({error: 'An error occured' });
